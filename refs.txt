@@ -1,3 +1,7 @@
 HTML Code Formater:
     https://www.freeformatter.com/html-formatter.html
     4 spaces in a Tab
+
+PDF to HTML:
+	https://convertio.co/pdf-html/
+	https://www.idrsolutions.com/online-pdf-to-html5-converter
