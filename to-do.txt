@@ -7,3 +7,4 @@
 7. Blog index
 8. Achivements
 9. Notifications
+10. Chat System
