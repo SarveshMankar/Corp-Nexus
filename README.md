@@ -50,8 +50,8 @@ The company system provides all the characteristics needed by a business to carr
 2.) Clone this repository in htdocs folder of XAMPP.<br>
 3.) Start Apache and MySQL server.<br>
 4.) Open phpMyAdmin and create a database named "database".<br>
-5.) Import the mcq.sql file in the database.<br>
-6.) Open any browser and type "localhost/MCQ-Examination".<br>
+5.) Import the database.sql file in the database.<br>
+6.) Open any browser and type "localhost/Company-System".<br>
 
 ## Images
 
