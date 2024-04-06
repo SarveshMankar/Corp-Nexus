@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bulma Styled Page with API Integration</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+</head>
+<body>
+
+  <div class="container">
+    <div class="input-container">
+      <label class="label">Input:</label>
+      <div class="control">
+        <input id="inputText" class="input" type="text" placeholder="Enter your input here...">
+      </div>
+    </div>
+
+    <div class="output-box">
+      <p>Output:</p>
+      <div id="outputText" class="content">
+        <!-- Output content will appear here -->
+      </div>
+    </div>
+
+    <div class="control">
+      <button id="submitButton" class="button is-primary">Submit</button>
+    </div>
+  </div>
+
+  <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const inputText = document.getElementById('inputText');
+    const outputText = document.getElementById('outputText');
+    const submitButton = document.getElementById('submitButton');
+
+    submitButton.addEventListener('click', function () {
+      const inputValue = inputText.value;
+      fetch('http://localhost:5000/api/gentext', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ input_text: inputValue })
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        outputText.textContent = "Error: Failed to fetch data from server";
+      });
+    });
+  });
+  </script>
+
+</body>
+</html>
+
