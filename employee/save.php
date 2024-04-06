@@ -30,7 +30,7 @@
 
                     $conn=mysqli_connect($server_name,$username,$password,$database_name);
                     $sql_query = "INSERT into empt (uname,empid,ename,email,mobile,dob,eaddress,pphoto,bio,wstatus) VALUES 
-                                    ('$uname','$emp_id','$ename','$email','$mobile','$dob','$address','$imgContent','$bio','free') WHERE NOT EXISTS (
+                                    ('$uname','$emp_id','$ename','$email','$mobile','$dob','$address','$imgContent','$bio','Free') WHERE NOT EXISTS (
                                     SELECT uname FROM empt WHERE uname='$uname');";
                     mysqli_query($conn,$sql_query);
                     mysqli_close($conn);

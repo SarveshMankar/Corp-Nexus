@@ -59,7 +59,6 @@
         <div class="card-body">
           <h5 class="card-title">Add Employee Details</h5>
 
-          <!-- Vertical Form -->
           <form class="row g-3" action="addEmpBackend.php" method="POST">
 
           <div class="col-12">
@@ -69,7 +68,12 @@
         
             <div class="col-12">
               <label for="emprole" class="form-label">Employee Role</label>
-              <input type="text" class="form-control" name="emprole" id="emprole" required="">
+              <!-- drop down -->
+              <select id="emprole" name="emprole" class="form-select">
+                <option selected>Choose...</option>
+                <option value="admin">Admin</option>
+                <option value="emp">Employee</option>
+              </select>
             </div>
 
             <div class="col-md-6">
@@ -131,11 +135,17 @@
               <input type="text" class="form-control" name="bankacc" id="bankacc" required="">
             </div>
 
+            <!-- Skills he have in comma seperated values -->
+            <div class="col-12">
+              <label for="skills" class="form-label">Skills</label>
+              <input type="text" class="form-control" name="skills" id="skills" required="">
+            </div>
+
             <br>
             <div class="text-center">
               <button type="submit" name="addempsubmit" class="btn btn-primary">Submit</button>
             </div>
-          </form><!-- Vertical Form -->
+          </form>
 
         </div>
       </div>

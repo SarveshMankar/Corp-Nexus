@@ -60,7 +60,7 @@
           <h5 class="card-title">Add Client Details</h5>
 
           <!-- Vertical Form -->
-          <form class="row g-3" action="savec.php" method="POST">
+          <form class="row g-3" method="POST" id="myForm">
             <div class="col-12">
               <label for="cname" class="form-label">Company Name</label>
               <input type="text" class="form-control" name="cname" id="cname" required>
@@ -89,10 +89,14 @@
                 <br><label for="descrip">Description</label>
             <center>
                 <textarea class="form-control" id="descrip" name="descrip" rows="4"></textarea><br>
-            <div class="text-center">
-              <button type="submit" name="crsubmit" class="btn btn-primary">Submit</button>
-              <button type="reset" class="btn btn-secondary">Reset</button>
-            </div>
+                <div class="text-center">
+                  <button type="button" onclick="submitForm()" class="btn btn-primary">Submit</button>
+                  <button type="reset" class="btn btn-secondary">Reset</button>
+                </div>
+            </center>
+
+            <!-- hidden input tag -->
+            <input type="input" name="tags" id="tags">
           </form><!-- Vertical Form -->
 
         </div>
@@ -102,7 +106,62 @@
 
   </main><!-- End #main -->
 
+  <script>
+    function submitForm() {
 
+      var formData = {};
+      var formInputs = document.querySelectorAll('input');
+      formInputs.forEach(function(input) {
+        formData[input.name] = input.value;
+      });
+
+      var formInputs = document.querySelectorAll('textarea');
+      formInputs.forEach(function(input) {
+        formData[input.name] = input.value;
+      });
+
+      const inputValue = descrip.value;
+      fetch('http://localhost:5000/api/gentext', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ input_text: inputValue })
+      })
+      .then(response => response.json())
+      .then(data => {
+        // convert the data into a string and store it in the formData object
+        data = data.join(', ');
+        tags.value = data;
+        console.log('Success:', data);
+
+        var tagInput = document.getElementById('tags');
+        var tagValue = tagInput.value;
+        formData['tags'] = tagValue;
+
+
+        var jsonData = JSON.stringify(formData);
+        console.log(jsonData);
+
+        window.location.href = 'savec.php?data=' + encodeURIComponent(jsonData);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        outputText.textContent = "Error: Failed to fetch data from server";
+      });
+
+      // setTimeout(() => {
+      //   var tagInput = document.getElementById('tags');
+      //   var tagValue = tagInput.value;
+      //   formData['tags'] = tagValue;
+
+
+      //   var jsonData = JSON.stringify(formData);
+      //   console.log(jsonData);
+      // }, 5000);
+      // window.location.href = 'savec.php?data=' + encodeURIComponent(jsonData);
+    }
+  </script>
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 

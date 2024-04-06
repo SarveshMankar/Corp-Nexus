@@ -17,6 +17,8 @@ if($_SESSION['erole'] =='admin'){
         $bankacc = $_POST['bankacc'];
         $bsalary = $_POST['bsalary'];
         $deptname = $_POST['deptname'];
+        $skills = $_POST['skills'];
+        
 
 
         if($pwd == $repwd){

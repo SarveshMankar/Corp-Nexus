@@ -304,12 +304,12 @@ error_reporting(0);
                       </div>
                     </div>
 
-					<?php
-						echo '<label class="form-label" for="pp">Profile Photo</label>
-						<input type="file" class="form-control" id="pp" name="pp" />';
-						echo '<br><label for="bio">Bio</label>
-						<textarea class="form-control" id="bio" name="bio" rows="4">'.$bio.'</textarea><br>';
-					?>
+                    <?php
+                      echo '<label class="form-label" for="pp">Profile Photo</label>
+                      <input type="file" class="form-control" id="pp" name="pp" />';
+                      echo '<br><label for="bio">Bio</label>
+                      <textarea class="form-control" id="bio" name="bio" rows="4">'.$bio.'</textarea><br>';
+                    ?>
 
                     <div class="row mb-3">
                       <label for="github" class="col-md-4 col-lg-3 col-form-label">Github Profile</label>

@@ -132,9 +132,6 @@
                     if ($pstatus=="Completed"){
                         echo "<script>alert('Project Already Completed');</script>";
                     }else{
-
-                    
-
                     $sql_query="SELECT * FROM clientt where ID=$pid";
                     $records=mysqli_query($conn,$sql_query);
                     while ($data=mysqli_fetch_assoc($records)){
@@ -147,6 +144,7 @@
                         $pdate=$data['pdate'];
                         $ddate=$data['ddate'];
                         $descrip=$data['descrip'];
+                        $tags=$data['tags'];
                         $status=$data['pstatus'];
                     }
                     
@@ -238,6 +236,17 @@
                                     echo '<p style="color: #111111;">'.$status.'</p>';
                                 echo '</div>';
                             echo '</div>';
+                            
+                            // row for tags
+                            echo '<div class="row">';
+                                echo '<div class="col-md-4">';
+                                    echo '<p style="color: #111111;">Tags:</p>';
+                                echo '</div>';
+                                echo '<div class="col-md-8">';
+                                    echo '<p style="color: #111111;">'.$tags.'</p>';
+                                echo '</div>';
+                            echo '</div>';
+                                
                             echo '</div>';
                             echo '<div class="col-md-6">';
                             echo '<h5 style="text-align: center;">Employees Status</h5><br>';
@@ -245,9 +254,10 @@
                             echo '<div class="col-md-11">';
 
                             $conn=mysqli_connect($server_name,$username,$password,$database_name);
-                            $sql_query = "SELECT * from empt";
+                            $sql_query = "SELECT * from empt order by wstatus desc";
                             $records = mysqli_query($conn, $sql_query);
                             $n=1;
+
                             echo '<div class="table-responsive">';
                             echo '<table class="table table-hover">';
                                 echo '<thead class="thead-dark">';
@@ -256,23 +266,82 @@
                                     echo '<th scope="col">Empid</th>';
                                     echo '<th scope="col">Employee Name</th>';
                                     echo '<th scope="col">Status</th>';
+                                    echo '<th scope="col">Score</th>';
                                     echo '</tr>';
                                 echo '</thead>';
                 
                                 echo '<tbody>';
+                                // while($data = mysqli_fetch_array($records)){
+                                //     $empid=$data['empid'];
+                                //     $ename=$data['ename'];
+                                //     $wstatus=$data['wstatus'];
+                    
+                                //     echo '<tr>
+                                //             <th scope="row">'.$n.'</th>
+                                //             <td>'.$empid.'</td>
+                                //             <td>'.$ename.'</td>
+                                //             <td>'.$wstatus.'</td>
+                                //             </tr>';
+                                //     $n+=1;
+                                // }
+
+                                $mainData=array();
+                                // just store the data of fetch records in array
                                 while($data = mysqli_fetch_array($records)){
+                                    $mainData[]=$data;
+                                }
+
+                                // now we will fetch the data from the array and display it
+                                $n=1;
+                                $dataForSort=array();
+                                foreach($mainData as $data){
                                     $empid=$data['empid'];
                                     $ename=$data['ename'];
                                     $wstatus=$data['wstatus'];
-                    
+                                    $skills=$data['skills'];
+
+                                    $r1=explode(", ",$tags);
+                                    $r2=explode(", ",$skills);
+
+                                    $r1=array_map('strtolower', $r1);
+                                    $r2=array_map('strtolower', $r2);
+
+                                    $count=0;
+                                    if (!empty($r1) && !empty($r2)){
+                                        foreach($r1 as $r){
+                                            foreach($r2 as $r3){
+                                                if ($r==$r3){
+                                                    $count+=1;
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    $n+=1;
+                                    $dataForSort[]=array('empid'=>$empid,'ename'=>$ename,'wstatus'=>$wstatus,'skills'=>$skills,'count'=>$count);
+                                }
+
+                                $count = array_column($dataForSort, 'count');
+                                array_multisort($count, SORT_DESC, $dataForSort);
+
+                                $n=1;
+                                foreach($dataForSort as $data){
+                                    $empid=$data['empid'];
+                                    $ename=$data['ename'];
+                                    $wstatus=$data['wstatus'];
+                                    $skills=$data['skills'];
+                                    $count=$data['count'];
+
                                     echo '<tr>
                                             <th scope="row">'.$n.'</th>
                                             <td>'.$empid.'</td>
                                             <td>'.$ename.'</td>
                                             <td>'.$wstatus.'</td>
+                                            <td>'.$count.'</td>
                                             </tr>';
                                     $n+=1;
                                 }
+
                                 echo '</tbody>
                                 </table>';
                                 echo '</div>';

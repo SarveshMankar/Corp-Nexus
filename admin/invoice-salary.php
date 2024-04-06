@@ -37,13 +37,17 @@
     $Receipt_number = $row3['id'];
     $gdate = $row3['gdate'];
     $gsalary = $row3['gsalary'];
-    $main_salary = $row3['tsalary'];
     $bonus = $row3['bonus'];
     $dsalary = $row3['dsalary'];
     }else{
         echo "<script>alert('Salary not found for given data');</script>";
         echo "<script>window.location.href='salpayment.php';</script>";
     } 
+
+    $sql4 = "SELECT * from salaryt where euid = '$empid'";
+    $result4 = $conn->query($sql4);
+    $row4 = $result4->fetch_assoc();
+    $main_salary = $row4['bsalary'];
   
 
   //bankacc details
