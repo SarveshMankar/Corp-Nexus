@@ -52,7 +52,6 @@
     </div><!-- End Page Title -->
 
     <section class="section dashboard">
-    <br>
     <div id="input" name="input" class="card" style="padding: 2%;">
         <form action="" method="post">
             <label for="empid" class="form-label">Fetch Employee Details by Employee ID:</label>

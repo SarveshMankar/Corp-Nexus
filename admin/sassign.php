@@ -1,4 +1,7 @@
 <?php
+    use PHPMailer\PHPMailer\PHPMailer;
+    use PHPMailer\PHPMailer\SMTP;
+    use PHPMailer\PHPMailer\Exception;
     session_start();
     if ($_SESSION['erole']=="admin"){
 ?>
@@ -55,6 +58,7 @@
         </div><!-- End Page Title -->
 
         <?php
+
             if (isset($_POST['assign'])){
                 $pid=$_POST['pid'];
                 //echo $pid."<br>";
@@ -86,13 +90,45 @@
                     $sql_query="INSERT into notift (euid,ttype,nmsg,ddate) VALUES ('$eid','Project','$nmsg','$pdate')";
                     mysqli_query($conn,$sql_query);
                     
-                    /*if (mysqli_query($conn,$sql_query)){
-                        echo "<script>alert('Assigned Successfully');</script>";
-                        header('Location: assign.php');
+
+                    require '../email/vendor/autoload.php';
+                    
+                    $mail = new PHPMailer(true);
+                    error_reporting(E_ERROR);
+
+                    try {
+                        //Server settings
+                        $mail->SMTPDebug = SMTP::DEBUG_SERVER;                    //Enable verbose debug output
+                        $mail->isSMTP();                                          //Send using SMTP
+                        $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
+                        $mail->SMTPAuth   = true;                                 //Enable SMTP authentication
+                        $mail->Username   = 'pt337740@gmail.com';                 //SMTP username
+                        $mail->Password   = 'apkgmvocgwytkgaw';                   //SMTP password
+                        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;          //Enable implicit TLS encryption
+                        $mail->Port       = 465;                                  //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+
+                        // Get email of employee
+                        $sql_query="SELECT * from empt WHERE empid='$eid'";
+                        $result=mysqli_query($conn,$sql_query);
+                        $row=mysqli_fetch_array($result);
+                        $email=$row['email'];
+                        $ename=$row['ename'];
+
+
+                        //Recipients
+                        $mail->setFrom('pt337740@gmail.com', 'Mailerop');
+                        $mail->addAddress($email, $ename);     //Add a recipient
+
+                        //Content
+                        $mail->isHTML(true);                                  //Set email format to HTML
+                        $mail->Subject = 'New Project Work Assigned!';
+                        $mail->Body    = 'You have been assigned to work of the project '.$pname.'!';
+
+                        $mail->send();
+                    } catch (Exception $e) {
+                        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
                     }
-                    else{
-                        echo "<script>alert('Assignment Failed');</script>";
-                    }*/
+
                 }
 
                 $nmsg="$pname Project Work Assigned!";
