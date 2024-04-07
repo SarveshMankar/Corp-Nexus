@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Run PHP Script</title>
+</head>
+<body>
+    <button id="runButton">Run PHP Script</button>
+
+    <script>
+        document.getElementById('runButton').addEventListener('click', function() {
+            // Send a request to execute the PHP script
+            fetch('email.php')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(data => {
+                console.log(data); // Log any response from the PHP script
+                // You can handle the response here as needed
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+        });
+    </script>
+</body>
+</html>
