@@ -51,7 +51,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Attendance Form</h5>
                         <!-- Vertical Form -->
-                        <form class="row mb-3" method="POST" action="attendanceBackend.php">
+                        <form class="row mb-3" method="POST" action="attendanceBackend.php" id="marAttendance">
                             <div class="col-12">
                                 <label for="inputNanme4" class="form-label">Employee id</label>
                                 <input type="text" class="form-control" id="empid" name="empid" required="">
@@ -82,8 +82,15 @@
                                 <br>
                                 <button type="submit" name="intime" class="btn btn-primary">Enter</button>
                                 <button type="submit" name="outtime" class="btn btn-secondary">Release</button>
-                            </div>
+                                
+                            
                         </form>
+                                <form method="POST"  id="myForm">
+                                    <input type="text" name="tags" id="tags">
+                                    <button type="button" name="intime-cam" onclick="submitInForm()" class="btn btn-primary">Enter: Camera</button>
+                                    <button type="button" name="outtime-cam" onclick="submitOutForm()" class="btn btn-secondary">Release: Camera</button>
+                                </form>
+                            </div>
                         <!-- Vertical Form -->
                     </div>
                 </div>
@@ -293,6 +300,69 @@
         </main>
         <!-- End #main -->
         <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+        <script>
+            function submitInForm() {
+                fetch('http://localhost:5000/api/get_data', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const updatedData = {
+                        ...data,
+                        'intime': data['mark'],
+                    };
+                    delete updatedData['mark'];
+                    console.log('Updated Data:', updatedData);
+                    var jsonData = JSON.stringify(updatedData);
+                    console.log(jsonData);
+                    window.location.href = 'attendanceBackend.php?IntimeData=' + encodeURIComponent(jsonData);
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                });
+            }
+            
+            function submitOutForm() {
+                fetch('http://localhost:5000/api/get_data', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log(data);
+                    const updatedData = {
+                        ...data,
+                        'outtime': data['mark'],
+                    };
+                    delete updatedData['mark'];
+                    console.log('Updated Data:', updatedData);
+                    var jsonData = JSON.stringify(updatedData);
+                    console.log(jsonData);
+                    window.location.href = 'attendanceBackend.php?OuttimeData=' + encodeURIComponent(jsonData);
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                });
+            }
+
+        </script>
+
         <!-- Vendor JS Files -->
         <script src="../assets/vendor/apexcharts/apexcharts.min.js"></script>
         <script src="../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

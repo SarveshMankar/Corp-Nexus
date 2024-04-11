@@ -1,12 +1,17 @@
 import sys
 import argparse
+
 import os
 import numpy as np
 import cv2 as cv
 from sface import SFace
+
 sys.path.append('../face_detection_yunet')
+
 from yunet import YuNet
 import pyvirtualcam
+import requests
+
 
 backend_target_pairs = [
     [cv.dnn.DNN_BACKEND_OPENCV, cv.dnn.DNN_TARGET_CPU],
@@ -20,11 +25,16 @@ backend_id = backend_target_pairs[1][0]
 target_id = backend_target_pairs[1][1]
 
 if __name__ == '__main__':
+    print("Hello, World!")
+
     recognizer = SFace(modelPath='face_recognition_sface_2021dec.onnx',
                        disType=0,
                        backendId=backend_id,
                        targetId=target_id)
-    detector = YuNet(modelPath='../face_detection_yunet/face_detection_yunet_2023mar.onnx',
+    
+    print("Hello, World!")
+
+    detector = YuNet(modelPath='/xampp/htdocs/Corp-Nexus/face-attendance/face_detection_yunet/face_detection_yunet_2023mar.onnx',
                      inputSize=[640, 640],
                      confThreshold=0.75,
                      nmsThreshold=0.3,
@@ -43,8 +53,6 @@ if __name__ == '__main__':
             face1 = detector.infer(img1)
             assert face1.shape[0] > 0, 'Cannot find a face in {}'.format(args.input1)
             faces.append([img1, face1, filename])
-
-
 
 cap = cv.VideoCapture(0)
 
@@ -99,6 +107,8 @@ fps = cap.get(cv.CAP_PROP_FPS)
 with pyvirtualcam.Camera(width, height, fps, fmt=pyvirtualcam.PixelFormat.BGR) as cam:
 
     print('Virtual camera device: ' + cam.device)
+    prev=None
+
     while True:
         hasFrame, frame = cap.read()
         if not hasFrame:
@@ -118,12 +128,23 @@ with pyvirtualcam.Camera(width, height, fps, fmt=pyvirtualcam.PixelFormat.BGR) a
                 for j in faces:
                     result = recognizer.match(j[0], j[1][0][:-1], frame, i[:-1])
                     if result:
-                        print("FACE MATCHED :", j[-1].split('.')[0])
+                        if prev != j[-1].split('.')[0]:
+                            prev = j[-1].split('.')[0]
+                            print("FACE MATCHED :", j[-1].split('.')[0])
+                            
+                            data={'mark':prev}
+                            response = requests.post('http://localhost:5000/api/save_data', json=data)
+
+                            if response.status_code == 200:
+                                print('Data saved successfully')
                         f = True
                         break
+                    
 
                 if not f:
                     frame = dvisualize(frame, [i], fps=tm.getFPS())
+                    prev = None
+                            
         cam.send(frame)
         cam.sleep_until_next_frame()
         tm.reset()
