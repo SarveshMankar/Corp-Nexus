@@ -17,14 +17,14 @@ try {
     $mail->isSMTP();                                            //Send using SMTP
     $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
     $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-    $mail->Username   = 'pt337740@gmail.com';                     //SMTP username
-    $mail->Password   = 'apkgmvocgwytkgaw';                               //SMTP password
+    $mail->Username   = '';                     //SMTP username
+    $mail->Password   = '';                               //SMTP password
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
     $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
     //Recipients
-    $mail->setFrom('pt337740@gmail.com', 'Mailerop');
-    $mail->addAddress('mankarsarvesh2543@gmail.com', 'ahhashskj ');     //Add a recipient
+    $mail->setFrom('', 'Mailerop');
+    $mail->addAddress('', 'ahhashskj ');     //Add a recipient
 
     //Attachments
    // $mail->addAttachment('/var/tmp/file.tar.gz');         //Add attachments

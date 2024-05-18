@@ -86,7 +86,6 @@
                             
                         </form>
                                 <form method="POST"  id="myForm">
-                                    <input type="text" name="tags" id="tags">
                                     <button type="button" name="intime-cam" onclick="submitInForm()" class="btn btn-primary">Enter: Camera</button>
                                     <button type="button" name="outtime-cam" onclick="submitOutForm()" class="btn btn-secondary">Release: Camera</button>
                                 </form>

@@ -3,7 +3,7 @@ from flask_cors import CORS
 
 import google.generativeai as palm
 
-palm.configure(api_key='AIzaSyBjOXYi5hVKQd5fFYiv1B4voFT72Kgm7jA')
+palm.configure(api_key='') # Set your API key here
 models = [m for m in palm.list_models() if 'generateText' in m.supported_generation_methods]
 model = models[0].name
 
